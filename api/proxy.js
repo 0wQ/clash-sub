@@ -1,23 +1,31 @@
 const fetch = require('node-fetch')
 
-exports.default = (req, res) => {
+module.exports = (req, res) => {
   const { token, url } = req.query
-  if (process.env.token && token === process.env.token) {
-    res.status(403).end()
+
+  console.log('token:', token, 'process.env.token:', process.env.token)
+  console.log('proxy:', url)
+
+  let allow = []
+  if (process.env.token) {
+    allow.push(token === process.env.token)
   }
-  if (!(url.endsWith('.yml') || url.endsWith('.yaml')) && /[?&=]/.test(url)) {
-    res.status(404).end()
+  allow.push(url.endsWith('.yml') || url.endsWith('.yaml'))
+
+  if (allow.includes(false)) {
+    res.status(403).send()
     return
   }
-  console.log('Proxy:', url)
+
   fetch(url)
     .then(r => r.text())
     .then(d => {
+      res.setHeader('content-type', 'text/yaml')
       res.setHeader('cache-control', 'public, max-age=60, s-maxage=60')
-      res.status(200).type('yaml').send(d)
+      res.status(200).send(d)
     })
     .catch(e => {
       console.error(e)
-      res.status(403).end()
+      res.status(403).send()
     })
 }

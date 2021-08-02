@@ -1,9 +1,8 @@
 const { parse, stringify } = require('yaml')
 const { orderBy, uniqBy } = require('lodash')
-// const { readFileSync } = require('fs')
 const fetch = require('node-fetch')
 
-exports.default = async (req, res) => {
+module.exports = async (req, res) => {
   const {
     config_base = process.env.config_base,
     config_nodes = process.env.config_nodes,
@@ -25,7 +24,7 @@ exports.default = async (req, res) => {
   allow.push(isUrl(config_nodes))
 
   if (allow.includes(false)) {
-    res.status(403).end()
+    res.status(403).send()
     return
   }
 
@@ -33,8 +32,6 @@ exports.default = async (req, res) => {
   const is_sort = toBoolean(sort)
   const is_yaml_merge = toBoolean(yaml_merge)
 
-  // const node_list_file = readFileSync('./config/node_list.yaml', 'utf8')
-  // const clash_base_config_file = readFileSync('./config/base.yaml', 'utf8')
   const node_list_file = await (await fetch(config_nodes)).text()
   const clash_base_file = await (await fetch(config_base)).text()
 
@@ -45,7 +42,7 @@ exports.default = async (req, res) => {
   const clash_config = configHandle(clash_base, node_list_proxies)
   const clash_config_yaml = stringify(clash_config, { sortMapEntries: is_sort })
 
-  res.type('yaml')
+  res.setHeader('content-type', 'text/yaml')
   res.send(clash_config_yaml)
 }
 
