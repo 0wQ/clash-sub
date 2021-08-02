@@ -1,6 +1,6 @@
-import fetch from 'node-fetch'
+const fetch = require('node-fetch')
 
-export default (req, res) => {
+exports.proxy = (req, res) => {
   const { token, url } = req.query
   if (process.env.token && token === process.env.token) {
     res.status(403).end()

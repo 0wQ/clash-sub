@@ -1,6 +1,6 @@
-import express from 'express'
-import api from './api/index.js'
-import proxy from './api/proxy.js'
+const express = require('express')
+const { api } = require('./api')
+const { proxy } = require('./api/proxy')
 
 const app = express()
 

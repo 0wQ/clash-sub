@@ -1,9 +1,9 @@
-import { parse, stringify } from 'yaml'
-import { orderBy, uniqBy } from 'lodash-es'
-// import { readFileSync } from 'fs'
-import fetch from 'node-fetch'
+const { parse, stringify } = require('yaml')
+const { orderBy, uniqBy } = require('lodash')
+// const { readFileSync } = require('fs')
+const fetch = require('node-fetch')
 
-export default async (req, res) => {
+exports.api = async (req, res) => {
   const {
     config_base = process.env.config_base,
     config_nodes = process.env.config_nodes,
