@@ -3,7 +3,7 @@ const { orderBy, uniqBy } = require('lodash')
 // const { readFileSync } = require('fs')
 const fetch = require('node-fetch')
 
-exports.api = async (req, res) => {
+exports.default = async (req, res) => {
   const {
     config_base = process.env.config_base,
     config_nodes = process.env.config_nodes,

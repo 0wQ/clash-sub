@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 
-exports.proxy = (req, res) => {
+exports.default = (req, res) => {
   const { token, url } = req.query
   if (process.env.token && token === process.env.token) {
     res.status(403).end()

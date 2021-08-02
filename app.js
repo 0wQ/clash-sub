@@ -1,6 +1,6 @@
 const express = require('express')
-const { api } = require('./api')
-const { proxy } = require('./api/proxy')
+const { default: api } = require('./api')
+const { default: proxy } = require('./api/proxy')
 
 const app = express()
 
