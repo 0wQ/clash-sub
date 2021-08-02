@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
 
   const clash_base = parse(clash_base_file, { merge: yaml_merge })
   const clash_config = configHandle(clash_base, node_list_proxies)
-  const clash_config_yaml = stringify(clash_config, { sortMapEntries: is_sort })
+  const clash_config_yaml = stringify(clash_config, { sortMapEntries: false })
 
   res.setHeader('content-type', 'text/yaml')
   res.send(clash_config_yaml)
