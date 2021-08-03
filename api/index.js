@@ -43,6 +43,8 @@ module.exports = async (req, res) => {
   const clash_config_yaml = stringify(clash_config, { sortMapEntries: false })
 
   res.setHeader('content-type', 'text/yaml')
+  res.setHeader('profile-update-interval', 3)
+  res.setHeader('subscription-userinfo', 'upload=0; download=5497558138880; total=10995116277760')
   res.send(clash_config_yaml)
 }
 
