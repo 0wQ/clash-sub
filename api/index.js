@@ -9,7 +9,8 @@ module.exports = async (req, res) => {
     token,
     exclude = '',
     sort = true,
-    yaml_merge = false
+    yaml_merge = false,
+    userinfo = false,
   } = req.query
 
   console.log('token:', token, 'process.env.token:', process.env.token)
@@ -31,8 +32,12 @@ module.exports = async (req, res) => {
   const toBoolean = s => (s === 'true' || s === true || s === '1' || s === 1)
   const is_sort = toBoolean(sort)
   const is_yaml_merge = toBoolean(yaml_merge)
+  const is_show_userinfo = toBoolean(userinfo)
 
-  const node_list_file = await (await fetch(config_nodes)).text()
+  const node_list_file_res = await fetch(config_nodes)
+  const node_list_file_headers = node_list_file_res.headers
+  const node_list_file = await node_list_file_res.text()
+
   const clash_base_file = await (await fetch(config_base)).text()
 
   const node_list = parse(node_list_file, { merge: is_yaml_merge })
@@ -45,7 +50,7 @@ module.exports = async (req, res) => {
   res.setHeader('content-type', 'text/yaml')
   res.setHeader('profile-update-interval', 3)
   res.setHeader('content-disposition', 'inline; filename="My Clash Sub"')
-  res.setHeader('subscription-userinfo', 'upload=0; download=5497558138880; total=10995116277760')
+  is_show_userinfo && res.setHeader('subscription-userinfo', node_list_file_headers.subscription-userinfo || 'upload=0; download=5497558138880; total=10995116277760')
   res.send(clash_config_yaml)
 }
 
