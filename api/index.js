@@ -107,6 +107,9 @@ function nodeListHandle(node_list, exclude_query, sort) {
   if (exclude_query) {
     proxiesFilter(proxies_out, exclude_query)
   }
+
+  proxies_out.map(i => i.name = i.name.replace(/^\[.*?\]/, ''))
+
   return proxies_out
 }
 
