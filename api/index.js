@@ -3,9 +3,9 @@ const { orderBy, uniqBy } = require('lodash')
 const fetch = require('node-fetch')
 
 module.exports = async (req, res) => {
-  const {
+  let {
     config_base = process.env.config_base,
-    config_nodes = process.env.config_nodes,
+    config_nodes = '',
     token,
     exclude = '',
     sort = true,
@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     allow.push(token === process.env.token)
   }
   allow.push(isUrl(config_base))
-  allow.push(isUrl(config_nodes))
+  // allow.push(isUrl(config_nodes))
 
   if (allow.includes(false)) {
     res.status(403).send()
@@ -34,16 +34,20 @@ module.exports = async (req, res) => {
   const is_yaml_merge = toBoolean(yaml_merge)
   const is_show_userinfo = toBoolean(userinfo)
 
+  const clash_base_file = await (await fetch(config_base)).text()
+  const clash_base = parse(clash_base_file, { merge: yaml_merge })
+
+  if (clash_base.config) {
+    config_nodes = config_nodes || clash_base.config.node_list || ''
+    clash_base.config = undefined
+  }
+
   const node_list_file_res = await fetch(config_nodes)
   const node_list_file_headers = node_list_file_res.headers
   const node_list_file = await node_list_file_res.text()
-
-  const clash_base_file = await (await fetch(config_base)).text()
-
   const node_list = parse(node_list_file, { merge: is_yaml_merge })
   const node_list_proxies = nodeListHandle(node_list, exclude, is_sort)
 
-  const clash_base = parse(clash_base_file, { merge: yaml_merge })
   const clash_config = configHandle(clash_base, node_list_proxies)
   const clash_config_yaml = stringify(clash_config, { sortMapEntries: false })
 
