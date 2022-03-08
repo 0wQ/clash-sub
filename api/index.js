@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     token,
     exclude = '',
     sort = true,
-    yaml_merge = false,
+    yaml_merge = process.env.yaml_merge || true,
     userinfo = false,
   } = req.query
 
