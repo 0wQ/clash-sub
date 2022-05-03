@@ -10,7 +10,7 @@ module.exports = (req, res) => {
   if (process.env.token) {
     allow.push(token === process.env.token)
   }
-  allow.push(url.endsWith('.yml') || url.endsWith('.yaml'))
+  allow.push(url.endsWith('.yml') || url.endsWith('.yaml') || url.endsWith('.txt') || url.endsWith('override') || url.endsWith('.list') || url.endsWith('.conf') || url.endsWith('module'))
 
   if (allow.includes(false)) {
     res.status(403).send()
@@ -20,7 +20,7 @@ module.exports = (req, res) => {
   fetch(url)
     .then(r => r.text())
     .then(d => {
-      res.setHeader('content-type', 'text/yaml')
+      res.setHeader('content-type', 'text/plain')
       res.setHeader('cache-control', 'public, max-age=60, s-maxage=60')
       res.status(200).send(d)
     })
