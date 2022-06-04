@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
   res.setHeader('content-type', 'text/yaml')
   res.setHeader('profile-update-interval', 3)
   res.setHeader('content-disposition', 'inline; filename="My Clash Sub"')
-  is_show_userinfo && res.setHeader('subscription-userinfo', node_list_file_headers.get('subscription-userinfo') || 'upload=1099511627776; download=2199023255552; total=9895604649984')
+  is_show_userinfo && res.setHeader('subscription-userinfo', node_list_file_headers.get('subscription-userinfo') || 'upload=1099511627776; download=2199023255552; total=9895604649984; expire=0')
   res.send(clash_config_yaml)
 }
 
