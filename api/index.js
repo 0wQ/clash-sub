@@ -114,7 +114,7 @@ function nodeListHandle(node_list, exclude_query, sort, user_agent) {
   }
 
   const stash_feature_protocol_names = ['vless', 'hysteria', 'tuic']
-  if (!/Stash/i.test(user_agent)) {
+  if (!/(Stash|Meta)/i.test(user_agent)) {
     proxies_out = proxies_out.filter(i => !stash_feature_protocol_names.includes(i.type))
     console.log('Stash feature disabled')
   }
