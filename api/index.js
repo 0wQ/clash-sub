@@ -18,6 +18,7 @@ module.exports = async (req, res) => {
   console.log('token:', token, 'process.env.token:', process.env.token)
   console.log('config_base:', config_base)
   console.log('config_nodes:', config_nodes)
+  console.log('user_agent:', user_agent)
 
   let allow = []
   if (process.env.token) {
@@ -116,7 +117,7 @@ function nodeListHandle(node_list, exclude_query, sort, user_agent) {
 
   const stash_feature_protocol_names = ['vless', 'hysteria', 'tuic']
   if (!/Stash/i.test(user_agent)) {
-    proxies_out = proxies_out.filter(i => !stash_feature_protocol_names.includes(i.type))
+    proxies_out = proxies_out.filter(i => stash_feature_protocol_names.includes(i.type))
   }
 
   proxies_out.map(i => i.name = i.name.replace(/^\[.*?\]/, ''))
