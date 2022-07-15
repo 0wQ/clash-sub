@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
   const node_list_file_headers = node_list_file_res.headers
   const node_list_file = await node_list_file_res.text()
   const node_list = parse(node_list_file, { merge: is_yaml_merge })
-  const node_list_proxies = nodeListHandle(node_list, exclude, is_sort)
+  const node_list_proxies = nodeListHandle(node_list, exclude, is_sort, user_agent)
 
   const clash_config = configHandle(clash_base, node_list_proxies)
   const clash_config_yaml = stringify(clash_config, { sortMapEntries: false })
@@ -86,7 +86,7 @@ function configHandle(clash, node_list_proxies) {
   return clash
 }
 
-function nodeListHandle(node_list, exclude_query, sort) {
+function nodeListHandle(node_list, exclude_query, sort, user_agent) {
   const { proxies, exclude = '' } = node_list
   let proxies_out = uniqBy(proxies)
   if (sort) {
