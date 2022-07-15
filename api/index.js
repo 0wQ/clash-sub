@@ -13,6 +13,8 @@ module.exports = async (req, res) => {
     userinfo = false,
   } = req.query
 
+  const user_agent = req.headers['user-agent'] || ''
+
   console.log('token:', token, 'process.env.token:', process.env.token)
   console.log('config_base:', config_base)
   console.log('config_nodes:', config_nodes)
@@ -110,6 +112,11 @@ function nodeListHandle(node_list, exclude_query, sort) {
   }
   if (exclude_query) {
     proxiesFilter(proxies_out, exclude_query)
+  }
+
+  const stash_feature_protocol_names = ['vless', 'hysteria', 'tuic']
+  if (!user_agent.test(/Stash/i)) {
+    proxies_out = proxies_out.filter(i => !stash_feature_protocol_names.includes(i.type))
   }
 
   proxies_out.map(i => i.name = i.name.replace(/^\[.*?\]/, ''))
