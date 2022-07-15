@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
   const node_list_file_res = await fetch(config_nodes)
   const node_list_file_headers = node_list_file_res.headers
   const node_list_file = await node_list_file_res.text()
-  const node_list = parse(node_list_file, { merge: is_yaml_merge })
+  const node_list = parse(node_list_file, { merge: false })
   const node_list_proxies = nodeListHandle(node_list, exclude, is_sort, user_agent)
 
   const clash_config = configHandle(clash_base, node_list_proxies)
