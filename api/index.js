@@ -115,7 +115,7 @@ function nodeListHandle(node_list, exclude_query, sort, user_agent) {
   }
 
   const stash_feature_protocol_names = ['vless', 'hysteria', 'tuic']
-  if (!user_agent.test(/Stash/i)) {
+  if (!/Stash/i.test(user_agent)) {
     proxies_out = proxies_out.filter(i => !stash_feature_protocol_names.includes(i.type))
   }
 
