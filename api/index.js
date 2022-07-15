@@ -9,7 +9,6 @@ module.exports = async (req, res) => {
     token,
     exclude = '',
     sort = true,
-    yaml_merge = process.env.yaml_merge || true,
     userinfo = false,
   } = req.query
 
@@ -34,11 +33,10 @@ module.exports = async (req, res) => {
 
   const toBoolean = s => (s === 'true' || s === true || s === '1' || s === 1)
   const is_sort = toBoolean(sort)
-  const is_yaml_merge = toBoolean(yaml_merge)
   const is_show_userinfo = toBoolean(userinfo)
 
   const clash_base_file = await (await fetch(config_base)).text()
-  const clash_base = parse(clash_base_file, { merge: yaml_merge })
+  const clash_base = parse(clash_base_file, { merge: true })
 
   if (clash_base.config) {
     config_nodes = config_nodes || clash_base.config.node_list || ''
